@@ -1,24 +1,19 @@
 {
-    "name": "antigravity-backend",
+    "name": "flagit-backend",
     "version": "1.0.0",
-    "description": "AI-powered URL threat detection backend for AntiGravity",
-    "type": "module",
+    "description": "FlagIt Backend API with Supabase integration",
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
-        "dev": "node --watch server.js",
-        "test": "node --test"
+        "dev": "nodemon server.js"
     },
     "keywords": [
-        "ai",
+        "threat-intelligence",
         "security",
-        "phishing-detection",
-        "url-analysis",
-        "cybersecurity",
-        "langchain",
-        "openai"
+        "supabase",
+        "ai"
     ],
-    "author": "AntiGravity Team",
+    "author": "FlagIt Team",
     "license": "MIT",
     "dependencies": {
         "@langchain/community": "^0.3.0",
@@ -32,7 +27,8 @@
         "zod": "^3.23.8"
     },
     "devDependencies": {
-        "@types/express": "^4.17.21"
+        "@types/express": "^4.17.21",
+        "nodemon": "^3.0.0"
     },
     "engines": {
         "node": ">=18.0.0"

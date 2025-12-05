@@ -1,0 +1,576 @@
+/**
+ * TrueTrace Motion System - CSS Animations
+ * Micro-interactions and keyframe animations for premium UI feel
+ */
+
+@layer utilities {
+  /* ===========================
+     GLOBAL MOTION UTILITIES
+     =========================== */
+  
+  .motion-fast {
+    transition-duration: 120ms;
+  }
+  
+  .motion-normal {
+    transition-duration: 200ms;
+  }
+  
+  .motion-smooth {
+    transition-duration: 280ms;
+  }
+  
+  .motion-deliberate {
+    transition-duration: 360ms;
+  }
+
+  .motion-ease-standard {
+    transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .motion-ease-accelerate {
+    transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
+  }
+
+  .motion-ease-decelerate {
+    transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
+  }
+
+  .motion-ease-bounce {
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .motion-ease-glide {
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* ===========================
+     PAGE LOAD ANIMATIONS
+     =========================== */
+  
+  .animate-fade-up {
+    animation: fadeUp 360ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  }
+
+  .animate-fade-up-small {
+    animation: fadeUpSmall 280ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 360ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  }
+
+  /* Stagger delays for dashboard cards */
+  .stagger-1 { animation-delay: 80ms; }
+  .stagger-2 { animation-delay: 160ms; }
+  .stagger-3 { animation-delay: 240ms; }
+  .stagger-4 { animation-delay: 320ms; }
+  .stagger-5 { animation-delay: 400ms; }
+  .stagger-6 { animation-delay: 480ms; }
+
+  /* ===========================
+     HOVER EFFECTS - BUTTONS
+     =========================== */
+  
+  .btn-hover-glow {
+    position: relative;
+    transition: transform 120ms cubic-bezier(0.4, 0.0, 0.2, 1),
+                box-shadow 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .btn-hover-glow:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 24px rgba(59, 130, 246, 0.45);
+  }
+
+  .btn-hover-glow:active {
+    transform: translateY(0);
+  }
+
+  .btn-gradient-shift {
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    transition: background-position 280ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .btn-gradient-shift:hover {
+    background-position: 100% 50%;
+  }
+
+  /* ===========================
+     HOVER EFFECTS - CARDS
+     =========================== */
+  
+  .card-hover-elevate {
+    transition: transform 200ms cubic-bezier(0.4, 0.0, 0.2, 1),
+                box-shadow 200ms cubic-bezier(0.4, 0.0, 0.2, 1),
+                border-color 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .card-hover-elevate:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 24px rgba(59, 130, 246, 0.45), 
+                0 12px 40px 0 rgba(0, 0, 0, 0.5);
+    border-color: rgba(34, 211, 238, 0.4);
+  }
+
+  .card-hover-glow-rim {
+    transition: border-color 200ms cubic-bezier(0.4, 0.0, 0.2, 1),
+                backdrop-filter 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .card-hover-glow-rim:hover {
+    border-color: rgba(34, 211, 238, 0.4);
+    backdrop-filter: blur(16px);
+  }
+
+  /* ===========================
+     SIDEBAR INTERACTIONS
+     =========================== */
+  
+  .sidebar-item {
+    position: relative;
+    transition: all 120ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .sidebar-item:hover {
+    transform: translateX(2px);
+  }
+
+  .sidebar-item-active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(90deg, #3B82F6, #06B6D4, #2DD4BF);
+    border-radius: 0 999px 999px 0;
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+    transition: transform 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .sidebar-item-active:hover::before {
+    transform: scaleX(1.5);
+  }
+
+  /* ===========================
+     INPUT INTERACTIONS
+     =========================== */
+  
+  .input-focus-glow {
+    transition: box-shadow 200ms cubic-bezier(0.4, 0.0, 0.2, 1),
+                border-color 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .input-focus-glow:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35);
+    border-color: #3B82F6;
+  }
+
+  .input-focus-glow::placeholder {
+    transition: opacity 120ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .input-focus-glow:focus::placeholder {
+    opacity: 0.5;
+  }
+
+  /* ===========================
+     TAB ANIMATIONS
+     =========================== */
+  
+  .tab-underline {
+    position: relative;
+  }
+
+  .tab-underline::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #3B82F6, #06B6D4, #2DD4BF);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 280ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .tab-underline.active::after {
+    transform: scaleX(1);
+  }
+
+  /* ===========================
+     DROPDOWN ANIMATIONS
+     =========================== */
+  
+  .dropdown-spring {
+    animation: dropdownSpring 200ms cubic-bezier(0.0, 0.0, 0.2, 1) forwards;
+  }
+
+  .dropdown-item {
+    transition: background-color 120ms cubic-bezier(0.4, 0.0, 0.2, 1),
+                transform 120ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: translateX(4px);
+  }
+
+  /* ===========================
+     TABLE INTERACTIONS
+     =========================== */
+  
+  .table-row-hover {
+    position: relative;
+    transition: background-color 120ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .table-row-hover:hover {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  }
+
+  .table-row-hover::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.3), transparent);
+    opacity: 0;
+    transition: opacity 120ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .table-row-hover:hover::after {
+    opacity: 1;
+  }
+
+  .sort-icon {
+    transition: transform 280ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .sort-icon.active {
+    transform: rotate(180deg);
+  }
+
+  /* ===========================
+     VERIFICATION ANIMATIONS
+     =========================== */
+  
+  .textarea-expand {
+    transition: transform 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .textarea-expand:focus {
+    transform: scale(1.01);
+  }
+
+  .result-panel-bounce {
+    animation: resultPanelBounce 360ms cubic-bezier(0.68, -0.55, 0.265, 1.2) forwards;
+  }
+
+  .confidence-bar-grow {
+    animation: confidenceBarGrow 600ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  }
+
+  .file-upload-drag {
+    transition: border-color 200ms cubic-bezier(0.4, 0.0, 0.2, 1),
+                box-shadow 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .file-upload-drag.drag-over {
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+
+  .thumbnail-fade-in {
+    animation: thumbnailFadeIn 280ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  }
+
+  .risk-pulse-critical {
+    animation: riskPulse 2s ease-in-out infinite;
+  }
+
+  /* ===========================
+     MAP ANIMATIONS
+     =========================== */
+  
+  .map-region-highlight {
+    transition: opacity 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .map-marker-bounce {
+    animation: markerBounce 600ms cubic-bezier(0.68, -0.55, 0.265, 1.2) forwards;
+  }
+
+  /* ===========================
+     MODAL & DRAWER ANIMATIONS
+     =========================== */
+  
+  .modal-backdrop-fade {
+    animation: backdropFade 200ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  }
+
+  .modal-scale-in {
+    animation: modalScaleIn 280ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  }
+
+  .drawer-slide-in {
+    animation: drawerSlideIn 360ms cubic-bezier(0.0, 0.0, 0.2, 1) forwards;
+  }
+
+  /* ===========================
+     NOTIFICATION ANIMATIONS
+     =========================== */
+  
+  .notification-slide-in {
+    animation: notificationSlideIn 280ms cubic-bezier(0.0, 0.0, 0.2, 1) forwards;
+  }
+
+  .notification-fade-out {
+    animation: notificationFadeOut 200ms cubic-bezier(0.4, 0.0, 0.2, 1) 5s forwards;
+  }
+
+  /* ===========================
+     CHART ANIMATIONS
+     =========================== */
+  
+  .chart-line-draw {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: lineDrawIn 800ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  }
+
+  .chart-bar-grow {
+    transform-origin: bottom;
+    animation: barGrowUp 600ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  }
+
+  /* ===========================
+     LOADING & SKELETON
+     =========================== */
+  
+  .skeleton-pulse {
+    animation: skeletonPulse 1.5s ease-in-out infinite;
+  }
+
+  .loading-spinner {
+    animation: spin 1s linear infinite;
+  }
+
+  .loading-dots span {
+    animation: dotBounce 1.4s ease-in-out infinite;
+  }
+
+  .loading-dots span:nth-child(1) { animation-delay: 0s; }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+}
+
+/* ===========================
+   KEYFRAMES
+   =========================== */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUpSmall {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes dropdownSpring {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes resultPanelBounce {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes confidenceBarGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes thumbnailFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes riskPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(239, 68, 68, 0.6);
+  }
+}
+
+@keyframes markerBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes backdropFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes drawerSlideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes notificationSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(400px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes notificationFadeOut {
+  to {
+    opacity: 0;
+    transform: translateX(400px);
+  }
+}
+
+@keyframes lineDrawIn {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes barGrowUp {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes skeletonPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dotBounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ===========================
+   REDUCED MOTION SUPPORT
+   =========================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

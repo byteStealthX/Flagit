@@ -10,8 +10,8 @@ URL: https://github.com/byteStealthX
 
 1. Go to https://github.com/new
 2. Fill in:
-   - **Repository name**: `trutrace-platform`
-   - **Description**: `Professional threat intelligence platform with AI-powered analysis and real-time data`
+   - **Repository name**: `flagit-platform`
+   - **Description**: `Professional misinformation detection platform with AI-powered analysis and real-time data`
    - **Visibility**: Public or Private (your choice)
    - **DO NOT** initialize with README, .gitignore, or license (we already have these)
 3. Click **"Create repository"**
@@ -24,7 +24,7 @@ After creating the repository, run these commands:
 cd "c:\Users\ganes\Desktop\miss info"
 
 # Add the remote repository
-git remote add origin https://github.com/byteStealthX/trutrace-platform.git
+git remote add origin https://github.com/byteStealthX/flagit-platform.git
 
 # Push to GitHub
 git push -u origin main
@@ -39,7 +39,7 @@ When prompted:
 #### How to Create Personal Access Token:
 1. Go to https://github.com/settings/tokens
 2. Click "Generate new token" → "Generate new token (classic)"
-3. Give it a name: `TruTrace Deploy`
+3. Give it a name: `FlagIt Deploy`
 4. Select scopes: `repo` (full control)
 5. Click "Generate token"
 6. **Copy the token** (you won't see it again!)
@@ -48,7 +48,7 @@ When prompted:
 ### 4. Verify Upload
 
 After pushing, visit:
-https://github.com/byteStealthX/trutrace-platform
+https://github.com/byteStealthX/flagit-platform
 
 You should see all your files!
 
@@ -63,7 +63,7 @@ If you have GitHub CLI installed:
 gh auth login
 
 # Create repository and push
-gh repo create trutrace-platform --public --source=. --push
+gh repo create flagit-platform --public --source=. --push
 ```
 
 ---
@@ -104,7 +104,7 @@ If you want to deploy the frontend:
 ## Repository Structure
 
 ```
-trutrace-platform/
+flagit-platform/
 ├── backend/              # Node.js API
 ├── frontend-app/         # React frontend
 ├── supabase-schema.sql   # Database
@@ -122,7 +122,7 @@ trutrace-platform/
 cd "c:\Users\ganes\Desktop\miss info"
 
 # Add remote
-git remote add origin https://github.com/byteStealthX/trutrace-platform.git
+git remote add origin https://github.com/byteStealthX/flagit-platform.git
 
 # Push to GitHub
 git push -u origin main

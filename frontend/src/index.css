@@ -1,0 +1,19 @@
+/* Import Fonts */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/inter/800.css';
+@import '@fontsource/roboto-mono/400.css';
+
+/* TrueTrace Design System - Main Entry Point */
+
+/* Import Design Tokens */
+@import './styles/design-tokens.css';
+
+/* Import Component Library */
+@import './styles/components.css';
+
+/* Import Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

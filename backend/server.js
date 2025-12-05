@@ -1,20 +1,28 @@
-import express from 'express';
-import cors from 'cors';
-import { ChatOpenAI } from '@langchain/openai';
-import { TavilySearchResults } from '@langchain/community/tools/tavily_search';
-import { StructuredOutputParser } from 'langchain/output_parsers';
-import { PromptTemplate } from '@langchain/core/prompts';
-import { z } from 'zod';
-import dotenv from 'dotenv';
-
-dotenv.config();
+const express = require('express');
+const cors = require('cors');
+const { ChatOpenAI } = require('@langchain/openai');
+const { TavilySearchResults } = require('@langchain/community/tools/tavily_search');
+const { StructuredOutputParser } = require('langchain/output_parsers');
+const { PromptTemplate } = require('@langchain/core/prompts');
+const { z } = require('zod');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Import routes
+const reportsRouter = require('./routes/reports');
+const analyticsRouter = require('./routes/analytics');
+const commentsRouter = require('./routes/comments');
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Mount routes
+app.use('/api/reports', reportsRouter);
+app.use('/api/analytics', analyticsRouter);
+app.use('/api/comments', commentsRouter);
 
 // OpenAI API Key Rotation (fallback support)
 const OPENAI_KEYS = [
@@ -193,6 +201,24 @@ Return ONLY valid JSON, no additional text.
     } catch (error) {
         console.error('Error processing request:', error);
 
+        // Check for OpenAI quota error
+        if (error.message && error.message.includes('quota')) {
+            return res.status(402).json({
+                error: 'OpenAI API Quota Exceeded',
+                message: 'Your OpenAI API key has exceeded its quota. Please add credits to your OpenAI account or use a different API key.',
+                details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+            });
+        }
+
+        // Check for OpenAI API errors
+        if (error.status === 429) {
+            return res.status(429).json({
+                error: 'Rate Limit Exceeded',
+                message: 'Too many requests to OpenAI API. Please try again in a moment.',
+                details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+            });
+        }
+
         res.status(500).json({
             error: 'Internal server error',
             message: 'Failed to analyze URL. Please try again.',
@@ -205,7 +231,7 @@ Return ONLY valid JSON, no additional text.
 app.get('/health', (req, res) => {
     res.json({
         status: 'healthy',
-        service: 'AntiGravity Backend',
+        service: 'FlagIt Backend',
         version: '1.0.0',
         timestamp: new Date().toISOString(),
     });
@@ -214,11 +240,14 @@ app.get('/health', (req, res) => {
 // Root endpoint
 app.get('/', (req, res) => {
     res.json({
-        service: 'AntiGravity - AI Link Threat Sentinel',
+        service: 'FlagIt - Misinformation Detection Platform',
         version: '1.0.0',
-        description: 'AI-powered URL threat detection engine',
+        description: 'AI-powered misinformation detection and fact-checking platform',
         endpoints: {
             verify: 'POST /api/verify',
+            reports: 'GET /api/reports',
+            analytics: 'GET /api/analytics',
+            comments: 'GET /api/comments',
             health: 'GET /health',
         },
         documentation: 'See README.md for API documentation',
@@ -227,11 +256,14 @@ app.get('/', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`🚀 AntiGravity Backend running on port ${PORT}`);
-    console.log(`📡 API endpoint: http://localhost:${PORT}/api/verify`);
+    console.log(`🚀 FlagIt Backend running on port ${PORT}`);
+    console.log(`📡 URL Verification: http://localhost:${PORT}/api/verify`);
+    console.log(`📊 Reports API: http://localhost:${PORT}/api/reports`);
+    console.log(`📈 Analytics API: http://localhost:${PORT}/api/analytics`);
+    console.log(`💬 Comments API: http://localhost:${PORT}/api/comments`);
     console.log(`💚 Health check: http://localhost:${PORT}/health`);
     console.log(`🔑 OpenAI keys loaded: ${OPENAI_KEYS.length}`);
     console.log(`🔍 Tavily search: ${tavilySearch ? 'enabled' : 'disabled'}`);
 });
 
-export default app;
+module.exports = app;

@@ -1,6 +1,6 @@
-# TruTrace - Threat Intelligence Platform
+# FlagIt - Misinformation Detection Platform
 
-Complete threat intelligence platform with AI-powered analysis, real-time data, and professional UI.
+Complete misinformation detection platform with AI-powered analysis, real-time data, and professional UI.
 
 ## 🚀 Quick Start
 

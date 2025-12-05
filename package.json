@@ -1,7 +1,7 @@
 {
-    "name": "antigravity-backend-v2",
+    "name": "flagit-platform",
     "version": "2.0.0",
-    "description": "Enhanced AI-powered URL threat detection backend",
+    "description": "Enhanced AI-powered misinformation detection platform",
     "type": "module",
     "main": "server.js",
     "scripts": {

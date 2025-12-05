@@ -1,5 +1,5 @@
 -- =============================================
--- TruTrace Database Schema
+-- FlagIt Database Schema
 -- =============================================
 
 -- Enable UUID extension
@@ -231,7 +231,7 @@ CREATE TRIGGER update_comments_updated_at BEFORE UPDATE ON comments
 
 -- Insert default user
 INSERT INTO users (email, full_name, role, avatar_url) VALUES
-('alex.mercer@trutrace.com', 'Alex Mercer', 'analyst', NULL)
+('alex.mercer@flagit.com', 'Alex Mercer', 'analyst', NULL)
 ON CONFLICT (email) DO NOTHING;
 
 -- Insert sample tags
@@ -267,7 +267,7 @@ SELECT
   'North America',
   'CTA-2024-0921',
   id
-FROM users WHERE email = 'alex.mercer@trutrace.com'
+FROM users WHERE email = 'alex.mercer@flagit.com'
 ON CONFLICT (report_id) DO NOTHING;
 
 INSERT INTO reports (
@@ -293,7 +293,7 @@ SELECT
   'East Asia',
   'GPB-2024-0920',
   id
-FROM users WHERE email = 'alex.mercer@trutrace.com'
+FROM users WHERE email = 'alex.mercer@flagit.com'
 ON CONFLICT (report_id) DO NOTHING;
 
 -- Insert analytics data
@@ -306,7 +306,7 @@ ON CONFLICT (date) DO NOTHING;
 -- Success message
 DO $$
 BEGIN
-  RAISE NOTICE 'TruTrace database schema created successfully!';
+  RAISE NOTICE 'FlagIt database schema created successfully!';
   RAISE NOTICE 'Sample data inserted.';
   RAISE NOTICE 'You can now connect your application.';
 END $$;
