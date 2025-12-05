@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # FlagIt - Misinformation Detection Platform
 
 Complete misinformation detection platform with AI-powered analysis, real-time data, and professional UI.
@@ -99,3 +100,7 @@ npm run dev
 ## 📝 License
 
 MIT
+=======
+# Flagit
+FlagIt - Complete misinformation detection platform featuring AI-powered content analysis, URL verification, real-time fact-checking, source credibility tracking, and comprehensive analytics. Built with React + TypeScript + Vite frontend, Node.js + Express backend, OpenAI GPT-4, Tavily API, and Supabase database.
+>>>>>>> 8feed87814e2b6f76afc2110c44590c48a47d25d
