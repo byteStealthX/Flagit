@@ -1,18 +1,63 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Shield, Mail, Lock, User } from "lucide-react";
+import { Shield, Mail, Lock, User, AlertCircle, CheckCircle } from "lucide-react";
+import { api } from "@/lib/api";
 
 export default function Register() {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Register:", { name, email, password, confirmPassword, agreeToTerms });
+    setError("");
+    setSuccess(false);
+
+    // Validation
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await api.signup(email, password, name);
+
+      setSuccess(true);
+
+      // If session is returned, store it and navigate
+      if (response.session) {
+        localStorage.setItem('access_token', response.session.access_token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+
+        // Navigate to dashboard after a short delay
+        setTimeout(() => {
+          navigate('/app/dashboard');
+        }, 1500);
+      } else {
+        // Navigate to verify email or login page
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -46,6 +91,22 @@ export default function Register() {
             <h1 className="h2 mb-2">Create Account</h1>
             <p className="body" style={{ color: 'var(--text-secondary)' }}>Start detecting misinformation today</p>
           </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 mb-6 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-red-500" />
+              <p className="text-sm text-red-500">{error}</p>
+            </div>
+          )}
+
+          {/* Success Message */}
+          {success && (
+            <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/30 mb-6 flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-500" />
+              <p className="text-sm text-green-500">Account created successfully! Redirecting...</p>
+            </div>
+          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -139,8 +200,12 @@ export default function Register() {
             </label>
 
             {/* Sign Up Button */}
-            <button type="submit" className="btn btn-primary w-full">
-              Create Account
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled={loading || !agreeToTerms}
+            >
+              {loading ? 'Creating Account...' : 'Create Account'}
             </button>
 
             {/* Divider */}

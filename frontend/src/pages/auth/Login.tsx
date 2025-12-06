@@ -1,16 +1,36 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Shield, Mail, Lock } from "lucide-react";
+import { Shield, Mail, Lock, AlertCircle } from "lucide-react";
+import { api } from "@/lib/api";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login:", { email, password, rememberMe });
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await api.login(email, password);
+
+      // Store session data
+      localStorage.setItem('access_token', response.access_token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+
+      // Navigate to dashboard
+      navigate('/app/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,6 +71,14 @@ export default function Login() {
             <h1 className="h2 mb-2">Welcome Back</h1>
             <p className="body" style={{ color: 'var(--text-secondary)' }}>Sign in to your intelligence platform</p>
           </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 mb-6 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-red-500" />
+              <p className="text-sm text-red-500">{error}</p>
+            </div>
+          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -109,8 +137,12 @@ export default function Login() {
             </div>
 
             {/* Sign In Button */}
-            <button type="submit" className="btn btn-primary w-full">
-              Sign In
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled={loading}
+            >
+              {loading ? 'Signing In...' : 'Sign In'}
             </button>
 
             {/* Divider */}

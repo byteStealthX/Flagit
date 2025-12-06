@@ -30,6 +30,8 @@ import { useLenis } from "@/hooks/useLenis";
 import { LazyComponent } from "@/hooks/useLazyLoad";
 import { KPICard } from "@/components/ui/UIComponents";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/lib/api";
+import { useEffect, useState } from "react";
 
 const kpis = [
   {
@@ -143,6 +145,24 @@ const systemHealth = [
 
 export default function Dashboard() {
   useLenis(); // Enable smooth scrolling
+  const [stats, setStats] = useState<any>(null);
+
+  useEffect(() => {
+    api.getDashboardStats().then(response => {
+      if (response && response.success) {
+        setStats(response.data);
+      }
+    }).catch(console.error);
+  }, []);
+
+  const getKpiValue = (label: string, fallback: string) => {
+    if (!stats) return fallback;
+    switch (label) {
+      case "Total Reports": return stats.totalReports?.toString() || fallback;
+      case "High-Risk Alerts": return stats.highPriority?.toString() || fallback;
+      default: return fallback;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -171,7 +191,7 @@ export default function Dashboard() {
                 <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-secondary/50 mb-3">
                   <kpi.icon className={`w-5 h-5 ${kpi.color}`} />
                 </div>
-                <p className="text-3xl font-bold mb-1">{kpi.value}</p>
+                <p className="text-3xl font-bold mb-1">{getKpiValue(kpi.label, kpi.value)}</p>
                 <p className="text-xs text-muted-foreground">{kpi.label}</p>
                 <div className={`flex items-center gap-1 text-xs mt-2 ${kpi.trend === "up" ? "text-green-400" : "text-red-400"}`}>
                   {kpi.trend === "up" ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}

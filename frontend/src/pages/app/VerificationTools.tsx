@@ -23,6 +23,7 @@ import {
   Flag,
   Search,
 } from "lucide-react";
+import { api } from "@/lib/api";
 
 const tools = [
   { id: "text", label: "Text Claim", icon: FileText },
@@ -51,14 +52,37 @@ export default function VerificationTools() {
   const [activeTab, setActiveTab] = useState("text");
   const [isVerifying, setIsVerifying] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [result, setResult] = useState<any>(null);
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
+    if (!inputValue) return;
+
     setIsVerifying(true);
     setShowResults(false);
-    setTimeout(() => {
-      setIsVerifying(false);
+
+    try {
+      const data = await api.verifyUrl(inputValue, activeTab);
+
+      const mappedResult = {
+        verdict: data.verdict || "Unverified",
+        confidence: data.riskLevel === "HIGH" ? 95 : data.riskLevel === "MEDIUM" ? 70 : 90,
+        riskCategory: (data.riskLevel || "medium").toLowerCase(),
+        summary: data.reasons || "No detailed summary available.",
+        evidence: (data.sources || []).map((s: string) => ({
+          source: new URL(s).hostname,
+          finding: "Source linked in analysis",
+          verdict: "reference"
+        }))
+      };
+
+      setResult(mappedResult);
       setShowResults(true);
-    }, 2000);
+    } catch (error) {
+      console.error("Verification failed", error);
+    } finally {
+      setIsVerifying(false);
+    }
   };
 
   const renderInputArea = (type: string) => {
@@ -69,6 +93,8 @@ export default function VerificationTools() {
             <Textarea
               placeholder="Paste the claim or statement you want to verify..."
               className="input-glass min-h-[150px]"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
             />
             <div className="flex gap-3">
               <Input placeholder="Source URL (optional)" className="input-glass" />
@@ -81,7 +107,12 @@ export default function VerificationTools() {
           <div className="space-y-4">
             <div className="relative">
               <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input placeholder="https://example.com/article" className="input-glass pl-10" />
+              <Input
+                placeholder="https://example.com/article"
+                className="input-glass pl-10"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
             </div>
             <p className="text-sm text-muted-foreground">Enter a URL to analyze the page content for misinformation markers.</p>
           </div>
@@ -220,17 +251,17 @@ export default function VerificationTools() {
                     <div className="text-center p-6 rounded-lg bg-secondary/30">
                       <div className="flex items-center justify-center gap-3 mb-2">
                         <XCircle className="w-8 h-8 text-red-400" />
-                        <span className="text-2xl font-bold text-red-400">{mockResult.verdict}</span>
+                        <span className="text-2xl font-bold text-red-400">{result?.verdict}</span>
                       </div>
                       <div className="flex items-center justify-center gap-4 mt-4">
                         <div>
-                          <p className="text-3xl font-bold gradient-text">{mockResult.confidence}%</p>
+                          <p className="text-3xl font-bold gradient-text">{result?.confidence}%</p>
                           <p className="text-xs text-muted-foreground">Confidence</p>
                         </div>
                         <div className="w-px h-12 bg-border" />
                         <div>
-                          <StatusBadge variant="risk" risk={mockResult.riskCategory as any}>
-                            {mockResult.riskCategory} risk
+                          <StatusBadge variant="risk" risk={result?.riskCategory as any}>
+                            {result?.riskCategory} risk
                           </StatusBadge>
                         </div>
                       </div>
@@ -239,24 +270,26 @@ export default function VerificationTools() {
                     {/* Summary */}
                     <div>
                       <h4 className="text-sm font-medium mb-2">Summary</h4>
-                      <p className="text-sm text-muted-foreground">{mockResult.summary}</p>
+                      <p className="text-sm text-muted-foreground">{result?.summary}</p>
                     </div>
 
                     {/* Evidence */}
                     <div>
                       <h4 className="text-sm font-medium mb-2">Evidence</h4>
                       <div className="space-y-2">
-                        {mockResult.evidence.map((ev, i) => (
-                          <div key={i} className="p-3 rounded-lg bg-secondary/30 flex items-start gap-3">
-                            {ev.verdict === "contradicted" && <XCircle className="w-4 h-4 text-red-400 mt-0.5" />}
-                            {ev.verdict === "unverified" && <AlertTriangle className="w-4 h-4 text-yellow-400 mt-0.5" />}
-                            {ev.verdict === "misleading" && <AlertTriangle className="w-4 h-4 text-orange-400 mt-0.5" />}
-                            <div className="flex-1">
-                              <p className="text-sm font-medium">{ev.source}</p>
-                              <p className="text-xs text-muted-foreground mt-0.5">{ev.finding}</p>
+                        {result?.evidence && result.evidence.length > 0 ? (
+                          result.evidence.map((ev: any, i: number) => (
+                            <div key={i} className="p-3 rounded-lg bg-secondary/30 flex items-start gap-3">
+                              <AlertTriangle className="w-4 h-4 text-yellow-400 mt-0.5" />
+                              <div className="flex-1">
+                                <p className="text-sm font-medium">{ev.source}</p>
+                                <p className="text-xs text-muted-foreground mt-0.5">{ev.finding}</p>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          ))
+                        ) : (
+                          <p className="text-sm text-muted-foreground">No specific evidence sources returned.</p>
+                        )}
                       </div>
                     </div>
 

@@ -43,8 +43,10 @@ import {
   MapPin,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { api } from "@/lib/api";
+import { useEffect } from "react";
 
-const reports = [
+const mockReports = [
   {
     id: "RPT-1234",
     title: "Vaccine Misinformation Campaign Analysis",
@@ -54,46 +56,6 @@ const reports = [
     analyst: "Sarah Kim",
     created: "2024-01-15",
     updated: "2024-01-15",
-  },
-  {
-    id: "RPT-1233",
-    title: "Deepfake Video Detection Report",
-    status: "In Review",
-    priority: "high",
-    category: "Political",
-    analyst: "Mike Thompson",
-    created: "2024-01-14",
-    updated: "2024-01-15",
-  },
-  {
-    id: "RPT-1232",
-    title: "Financial Scam Network Investigation",
-    status: "Draft",
-    priority: "medium",
-    category: "Financial",
-    analyst: "Alex Chen",
-    created: "2024-01-13",
-    updated: "2024-01-14",
-  },
-  {
-    id: "RPT-1231",
-    title: "Election Interference Claim Assessment",
-    status: "Published",
-    priority: "critical",
-    category: "Political",
-    analyst: "Emma Lee",
-    created: "2024-01-12",
-    updated: "2024-01-13",
-  },
-  {
-    id: "RPT-1230",
-    title: "Climate Change Denial Patterns",
-    status: "In Review",
-    priority: "medium",
-    category: "Science",
-    analyst: "John Davis",
-    created: "2024-01-11",
-    updated: "2024-01-12",
   },
 ];
 
@@ -131,6 +93,35 @@ const selectedReportData = {
 export default function Reports() {
   useLenis(); // Enable smooth scrolling
   const [viewerOpen, setViewerOpen] = useState(false);
+  const [reports, setReports] = useState<any[]>(mockReports);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const data = await api.getReports();
+        if (data && data.data) {
+          // Map backend format to UI format if needed
+          const mapped = data.data.map((r: any) => ({
+            id: r.id || "RPT-NEW",
+            title: r.url || "Untitled Report", // Backend stores URL, maybe use that as title
+            status: r.status || "In Review",
+            priority: r.risk_level?.toLowerCase() || "medium",
+            category: "General",
+            analyst: "AI System",
+            created: new Date(r.created_at).toLocaleDateString(),
+            updated: new Date(r.created_at).toLocaleDateString(),
+          }));
+          setReports([...mapped, ...mockReports]);
+        }
+      } catch (error) {
+        console.error("Failed to load reports", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReports();
+  }, []);
 
   return (
     <div className="space-y-6">
