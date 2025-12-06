@@ -1,0 +1,46 @@
+# Generate Railway Public Domain
+
+## Issue
+Railway only shows `flagit.railway.internal` (internal network only).
+You need a **public domain** for external access.
+
+## Solution: Generate Public Domain
+
+### Step 1: Go to Settings
+1. Open your Railway dashboard
+2. Click on **Flagit** service
+3. Go to **Settings** tab
+
+### Step 2: Generate Domain
+1. Scroll to **"Networking"** section
+2. Click **"Generate Domain"** button
+   - OR look for "Add Public Domain" 
+   - OR look for "Generate Public URL"
+
+### Step 3: Copy URL
+Railway will create a URL like:
+- `flagit-production.up.railway.app`
+- `devoted-essence-production.up.railway.app`
+
+Copy this URL!
+
+### Step 4: Add to Vercel
+1. Go to Vercel → Flagit → Settings → Environment Variables
+2. Add:
+   ```
+   Name: VITE_API_URL
+   Value: https://YOUR-RAILWAY-URL.up.railway.app/api
+   ```
+3. Redeploy
+
+### Step 5: Test
+Visit: `https://your-railway-url.up.railway.app/health`
+Should return: `{"status":"healthy",...}`
+
+## Screenshot Reference
+Look for a button like:
+- "Generate Domain"
+- "Public Networking"
+- "Expose Service"
+
+It's usually in Settings → Networking section.

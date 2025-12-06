@@ -1,0 +1,45 @@
+# ⚡ FINAL STEP: Configure Vercel
+
+## Your Railway URL
+```
+https://flagit-production.up.railway.app
+```
+
+## Add to Vercel (1 minute)
+
+### Step 1: Go to Vercel
+https://vercel.com/dashboard
+
+### Step 2: Find Flagit Project
+Click on **Flagit** project
+
+### Step 3: Add Environment Variable
+1. Go to: **Settings** → **Environment Variables**
+2. Click **"Add New"**
+3. Enter:
+   ```
+   Name: VITE_API_URL
+   Value: https://flagit-production.up.railway.app/api
+   ```
+4. Check: **Production**, **Preview**, **Development** (all three)
+5. Click **Save**
+
+### Step 4: Redeploy
+1. Go to **Deployments** tab
+2. Find the latest deployment
+3. Click **"..."** menu → **"Redeploy"**
+4. Wait 30 seconds
+
+## ✅ Done!
+
+Your app will be live at:
+- **Frontend**: https://flagit.vercel.app
+- **Backend**: https://flagit-production.up.railway.app
+
+## Test It
+1. Open: https://flagit.vercel.app
+2. Click: **Register**
+3. Create account
+4. Should work with Railway backend!
+
+Backend health: https://flagit-production.up.railway.app/health
