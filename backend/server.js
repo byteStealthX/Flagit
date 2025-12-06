@@ -17,7 +17,14 @@ const commentsRouter = require('./routes/comments');
 const authRouter = require('./routes/auth');
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: [
+        'http://localhost:8080',
+        'https://flagit.vercel.app',
+        /\.vercel\.app$/  // Allow all Vercel preview deployments
+    ],
+    credentials: true
+}));
 app.use(express.json());
 
 // Mount routes
