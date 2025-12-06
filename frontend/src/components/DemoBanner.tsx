@@ -1,10 +1,16 @@
 import { useDemoMode } from '@/contexts/DemoContext';
 import { X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 export function DemoBanner() {
     const { isDemoMode, setDemoMode } = useDemoMode();
+    const navigate = useNavigate();
+
+    const handleExitDemo = () => {
+        setDemoMode(false);
+        navigate('/');
+    };
 
     return (
         <AnimatePresence>
@@ -23,23 +29,21 @@ export function DemoBanner() {
                                     <Sparkles className="w-4 h-4 text-primary" />
                                 </div>
                                 <div>
-                                    <p className="text-sm font-medium text-foreground">
-                                        Demo Mode Active
+                                    <p className="text-sm font-medium">
+                                        🎭 Demo Mode Active
                                     </p>
                                     <p className="text-xs text-muted-foreground">
                                         You're viewing sample data. All features are fully functional.
                                     </p>
                                 </div>
                             </div>
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setDemoMode(false)}
-                                className="text-muted-foreground hover:text-foreground"
+                            <button
+                                onClick={handleExitDemo}
+                                className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center gap-2"
                             >
-                                <X className="w-4 h-4 mr-2" />
+                                <X className="w-4 h-4" />
                                 Exit Demo
-                            </Button>
+                            </button>
                         </div>
                     </div>
                 </motion.div>

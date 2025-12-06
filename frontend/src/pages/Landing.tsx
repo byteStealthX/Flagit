@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useDemoMode } from "@/contexts/DemoContext";
+import { DarkModeToggle } from "@/components/DarkModeToggle";
 import LogoLoop from "@/components/ui/logo-loop";
 import { SiReact, SiVite, SiTypescript, SiTailwindcss, SiNodedotjs, SiExpress, SiSupabase, SiOpenai } from 'react-icons/si';
 import {
@@ -62,15 +63,23 @@ const workflow = [
 
 const pricing = [
   {
+    name: "Free Trial",
+    price: "₹0",
+    period: "/30 days",
+    description: "Try all features free for 30 days",
+    features: ["3 team members", "500 claims/month", "Basic analytics", "Community support", "No credit card required"],
+    premium: true, // Mark as premium to get special styling
+  },
+  {
     name: "Starter",
-    price: "$99",
+    price: "₹8,299",
     period: "/month",
     description: "For small teams getting started",
     features: ["5 team members", "1,000 claims/month", "Basic analytics", "Email support", "Community access"],
   },
   {
     name: "Pro",
-    price: "$499",
+    price: "₹41,499",
     period: "/month",
     description: "For growing organizations",
     features: ["25 team members", "10,000 claims/month", "Advanced analytics", "API access", "Priority support", "Custom integrations"],
@@ -86,6 +95,10 @@ const pricing = [
 ];
 
 const faqs = [
+  {
+    question: "How do I verify a reference or claim?",
+    answer: "To verify: 1) Copy the claim/URL, 2) Paste into our verification tool, 3) Our AI analyzes across sources, 4) Review credibility score and evidence, 5) Check source reliability. You can also upload screenshots or documents for analysis.",
+  },
   {
     question: "How accurate is the AI verification?",
     answer: "Our models achieve 94% accuracy on benchmark datasets, with continuous improvement through human-in-the-loop feedback.",
@@ -120,21 +133,24 @@ export default function Landing() {
         Skip to content
       </a>
 
+      {/* Dark Mode Toggle */}
+      <DarkModeToggle />
+
       {/* Navbar */}
       <nav className="navbar">
         <div className="container navbar-container">
-          <Link to="/" className="navbar-logo">
+          <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="navbar-logo" style={{ cursor: 'pointer' }}>
             <div className="navbar-logo-icon">
               <Shield className="w-5 h-5 text-white" />
             </div>
             <span className="navbar-logo-text">TrueTrace</span>
-          </Link>
+          </a>
 
           <ul className="navbar-nav hidden md:flex">
-            <li><a href="#features" className="navbar-link">Features</a></li>
-            <li><a href="#workflow" className="navbar-link">How it Works</a></li>
-            <li><a href="#pricing" className="navbar-link">Pricing</a></li>
-            <li><a href="#faq" className="navbar-link">FAQ</a></li>
+            <li><a href="#features" onClick={(e) => { e.preventDefault(); document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }); }} className="navbar-link">Features</a></li>
+            <li><a href="#workflow" onClick={(e) => { e.preventDefault(); document.getElementById('workflow')?.scrollIntoView({ behavior: 'smooth' }); }} className="navbar-link">How it Works</a></li>
+            <li><a href="#pricing" onClick={(e) => { e.preventDefault(); document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }); }} className="navbar-link">Pricing</a></li>
+            <li><a href="#faq" onClick={(e) => { e.preventDefault(); document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' }); }} className="navbar-link">FAQ</a></li>
           </ul>
 
           <div className="navbar-actions">
@@ -315,12 +331,19 @@ export default function Landing() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   viewport={{ once: true }}>
-                  <div className={`card p-6 h-full relative ${plan.popular ? 'card-neon scale-105' : ''}`}>
+                  <div className={`card p-6 h-full relative ${plan.popular ? 'card-neon scale-105' : ''} ${plan.premium ? 'card-neon border-2' : ''}`}>
                     {plan.popular && (
                       <div
                         className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-pill text-xs font-semibold text-white"
                         style={{ background: 'var(--button-gradient)' }}>
                         Most Popular
+                      </div>
+                    )}
+                    {plan.premium && (
+                      <div
+                        className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-pill text-xs font-semibold text-white animate-glow-pulse"
+                        style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)' }}>
+                        ⭐ PREMIUM - FREE TRIAL
                       </div>
                     )}
                     <h3 className="h3 text-xl mb-2">{plan.name}</h3>

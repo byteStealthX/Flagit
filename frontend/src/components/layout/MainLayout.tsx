@@ -33,9 +33,8 @@ export function MainLayout({ children }: MainLayoutProps) {
 
       {/* Main Content */}
       <div
-        className={`transition-all duration-smooth ${
-          sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'
-        }`}
+        className={`transition-all duration-smooth ${sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'
+          }`}
       >
         {/* Topbar */}
         <AppTopbar
@@ -44,7 +43,7 @@ export function MainLayout({ children }: MainLayoutProps) {
         />
 
         {/* Page Content */}
-        <main className="min-h-[calc(100vh-4rem)]">
+        <main className="min-h-[calc(100vh-4rem)] overflow-y-auto">
           {children}
         </main>
       </div>
