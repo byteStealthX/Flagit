@@ -46,7 +46,7 @@ export function AppSidebar() {
     >
       {/* Logo */}
       <div className="p-4 border-b border-border/30">
-        <NavLink to="/app/dashboard" className="flex items-center gap-3">
+        <NavLink to="/" className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center">
             <Shield className="w-5 h-5 text-background" />
           </div>
