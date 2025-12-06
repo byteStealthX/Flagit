@@ -1,0 +1,14 @@
+# Nixpacks configuration for Railway
+# This tells Railway that the app is in the backend directory
+
+[phases.setup]
+nixPkgs = ['nodejs_18']
+
+[phases.install]
+cmds = ['cd backend && npm ci']
+
+[phases.build]
+cmds = []
+
+[start]
+cmd = 'cd backend && node server.js'
